@@ -82,4 +82,11 @@ class DiagnosticController extends Controller
             'message' => 'Diagnostic restored successfully',
         ]);
     }
+
+    public function mostFrequent()
+    {
+        return Diagnostic::query()
+        ->mostFrequent()
+        ->get();
+    }
 }

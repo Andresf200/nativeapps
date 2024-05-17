@@ -14,7 +14,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('patients', PatientController::class);
 Route::patch('patients/{patient}/restore', [PatientController::class, 'restore']);
 
+
+Route::get('diagnostics/frequents', [DiagnosticController::class, 'mostFrequent']);
 Route::apiResource('diagnostics', DiagnosticController::class);
 Route::patch('diagnostics/{diagnostic}/restore', [DiagnosticController::class, 'restore']);
 
 Route::post('diagnostic-patients', [DiagnosticPatientController::class, 'store']);
+

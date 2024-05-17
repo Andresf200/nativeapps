@@ -28,4 +28,11 @@ class Diagnostic extends Model
             ->withPivot('observation', 'creation')
             ->withTimestamps();
     }
+
+    public function scopeMostFrequent($query)
+{
+    return $query->withCount('patients')
+                 ->orderBy('patients_count', 'desc')
+                 ->limit(5);
+}
 }
