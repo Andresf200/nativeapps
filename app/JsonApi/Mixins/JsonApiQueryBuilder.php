@@ -54,52 +54,46 @@ class JsonApiQueryBuilder
         };
     }
 
-        public function sparseFieldset(): Closure
-        {
-            return function () {
-                /** @var Builder $this */
-                if (request()->isNotFilled('fields')) {
-                    return $this;
-                }
-                $fields = explode(',', request('fields.'.$this->getResourceType()));
-
-                $routeKeyName = $this->model->getRouteKeyName();
-
-                if (! in_array($routeKeyName, $fields)) {
-                    $fields[] = $routeKeyName;
-                }
-
-                $fields = array_map(function ($field) {
-                    return str($field)->replace('-', '_');
-                }, $fields);
-
-                return $this->addSelect($fields);
-            };
-        }
+    public function sparseFieldset(): Closure
+    {
+        return function () {
+            /** @var Builder $this */
+            if (request()->isNotFilled('fields')) {
+                return $this;
+            }
+            $fields = explode(',', request('fields.'.$this->getResourceType()));
+            $routeKeyName = $this->model->getRouteKeyName();
+            if (! in_array($routeKeyName, $fields)) {
+                $fields[] = $routeKeyName;
+            }
+            $fields = array_map(function ($field) {
+                return str($field)->replace('-', '_');
+            }, $fields);
+            return $this->addSelect($fields);
+        };
+    }
 
     public function jsonPaginate(): Closure
     {
         return function () {
             /** @var Builder $this */
-            $paginator = $this->paginate(
+            $results = $this->paginate(
                 $perPage = request('page.size', 15),
                 $columns = ['*'],
                 $pageName = 'page[number]',
                 $page = request('page.number', 1)
             )->appends(request()->only('sort', 'filter', 'page.size'));
 
-            // Personaliza la respuesta
-            $paginator->setCollection($paginator->getCollection()->map(function ($item) {
-                return [
-                    'total' => $paginator->total(),
-                    'to' => $paginator->lastItem(),
-                    'current_page' => $paginator->currentPage(),
-                ];
-            }));
-
-            return $paginator;
+            return [
+                'total' => $results->total(),
+                'size_page' => $results->perPage(),
+                'pages' => $results->lastPage(),
+                'current_page' => $results->currentPage(),
+                'data' => $results->items(),
+            ];
         };
     }
+
     public function getResourceType(): Closure
     {
         return function () {
