@@ -20,5 +20,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
          \App\Models\Patient::factory(10)->create();
+
+         \App\Models\Diagnostic::factory(10)->create();
     }
 }
