@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('diagnostics', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
             $table->text('name');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

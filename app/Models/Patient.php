@@ -32,4 +32,23 @@ class Patient extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function diagnostics(){
+        return $this->belongsToMany(Diagnostic::class)
+            ->withPivot('observation', 'creation')
+            ->withTimestamps();
+    }
+
+    public function scopeName($query, $name){
+        if($name){
+            return $query->where('first_name', 'like', "%$name%")
+                ->orWhere('last_name', 'like', "%$name%");
+        }
+    }
+
+    public function scopeDocument($query, $document){
+        if($document){
+            return $query->where('document', 'like', "%$document%");
+        }
+    }
 }

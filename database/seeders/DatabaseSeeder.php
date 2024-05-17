@@ -22,5 +22,13 @@ class DatabaseSeeder extends Seeder
          \App\Models\Patient::factory(10)->create();
 
          \App\Models\Diagnostic::factory(10)->create();
+
+         \App\Models\Patient::all()->each(function ($patient) {
+             $diagnostics = \App\Models\Diagnostic::inRandomOrder()->take(3)->get();
+             $patient->diagnostics()->attach($diagnostics->pluck('id')->toArray(), [
+                 'observation' => 'Observation for patient',
+                 'creation' => now()
+             ]);
+         });
     }
 }

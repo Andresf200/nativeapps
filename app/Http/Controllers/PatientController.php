@@ -11,8 +11,8 @@ class PatientController extends Controller
     public function index(Request $request)
     {
         $patients = Patient::query()
-        ->allowedIncludes([])
-        ->allowedFilters([])
+        ->allowedIncludes(['diagnostics'])
+        ->allowedFilters(['name', 'document'])
         ->jsonPaginate();
 
         return $patients;
@@ -39,7 +39,7 @@ class PatientController extends Controller
     public function show($patient)
     {
         return Patient::query()
-        ->allowedIncludes([])
+        ->allowedIncludes(['diagnostics'])
         ->findOrFail($patient);
     }
 

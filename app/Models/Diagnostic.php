@@ -22,4 +22,10 @@ class Diagnostic extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function patients(){
+        return $this->belongsToMany(Patient::class)
+            ->withPivot('observation', 'creation')
+            ->withTimestamps();
+    }
 }

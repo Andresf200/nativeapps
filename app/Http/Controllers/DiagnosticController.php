@@ -11,7 +11,7 @@ class DiagnosticController extends Controller
     public function index(Request $request)
     {
         $diagnostics = Diagnostic::query()
-        ->allowedIncludes([])
+        ->allowedIncludes(['patients'])
         ->allowedFilters([])
         ->jsonPaginate();
         return $diagnostics;
@@ -21,7 +21,7 @@ class DiagnosticController extends Controller
     {
         $diagnostic = Diagnostic::create([
             'name' => $request->name,
-            'description' => $request->description,
+            'description' => $request->input('description', null),
         ]);
 
         return response()->json([
@@ -33,7 +33,7 @@ class DiagnosticController extends Controller
     public function show($diagnostic)
     {
         return Diagnostic::query()
-        ->allowedIncludes([])
+        ->allowedIncludes(['patients'])
         ->find($diagnostic);
     }
 
@@ -42,7 +42,7 @@ class DiagnosticController extends Controller
         if($diagnostic !== null){
             $diagnostic->fill([
                 'name' => $request->name,
-                'description' => $request->description,
+                'description' => $request->input('description', null),
             ]);
 
             if ($diagnostic->isClean()) {

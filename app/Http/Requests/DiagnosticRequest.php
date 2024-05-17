@@ -15,7 +15,7 @@ class DiagnosticRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'description' => ['required','string'],
+            'description' => ['string'],
         ];
     }
 }
