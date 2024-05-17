@@ -7,12 +7,14 @@ use Illuminate\Http\Request;
 
 class PatientController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $patients = Patient::query()
+        ->allowedIncludes([])
+        ->allowedFilters([])
+        ->jsonPaginate();
+
+        return $patients;
     }
 
     /**

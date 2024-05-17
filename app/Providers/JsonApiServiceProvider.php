@@ -2,12 +2,9 @@
 
 namespace App\Providers;
 
-use ReflectionException;
-use Illuminate\Http\Request;
-use App\JsonApi\JsonApiRequest;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Builder;
 use App\JsonApi\Mixins\JsonApiQueryBuilder;
+use Illuminate\Database\Eloquent\Builder;
 
 
 class JsonApiServiceProvider extends ServiceProvider
